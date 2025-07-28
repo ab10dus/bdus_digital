@@ -1,1384 +1,858 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abdus Salam - Strategic Problem Solver & Product Leader</title>
+    <title>Abdus Salam | Strategic Product Consultant</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- GSAP (Animation) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Chart.js (Data Visualization) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide-react@0.292.0/dist/lucide-react.js"></script>
+    <script src="https://unpkg.com/lucide-icons@0.292.0/dist/lucide.min.js"></script>
+
+    <!-- Three.js (3D Background) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --primary: #1a1f36;
-            --accent: #4a90e2;
-            --secondary: #f39c12;
-            --text: #333;
-            --light-bg: #f8f9fa;
-            --white: #ffffff;
-            --gradient: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
-        }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e2e8f0; /* slate-200 */
         }
-        
-        /* Navigation */
-        nav {
-            position: fixed;
+        .hero-canvas-container {
+            position: absolute;
             top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(26, 31, 54, 0.95);
+            height: 100%;
+            z-index: 0;
+        }
+        .client-marquee-inner {
+            display: flex;
+            animation: marquee 60s linear infinite;
+        }
+        .client-marquee:hover .client-marquee-inner {
+            animation-play-state: paused;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .glassmorphism {
+            background: rgba(17, 24, 39, 0.6); /* bg-gray-900 with opacity */
             backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(55, 65, 81, 0.3); /* border-gray-700 with opacity */
         }
-        
-        nav.scrolled {
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--white);
-            text-decoration: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            color: var(--white);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: 500;
-        }
-        
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: var(--gradient);
-            color: var(--white);
-            padding: 8rem 2rem 4rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
+        .section-glow {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,133.3C960,128,1056,96,1152,90.7C1248,85,1344,107,1392,117.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-            background-size: cover;
-            opacity: 0.3;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 0.8s ease;
-        }
-        
-        .hero .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 0.8s ease 0.2s both;
-        }
-        
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-top: 3rem;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease 0.4s both;
-        }
-        
-        .stat {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            display: block;
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        /* Services Section */
-        .services {
-            padding: 5rem 2rem;
-            background: var(--light-bg);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: var(--primary);
-        }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .service-card {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-        
-        .service-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-        
-        .service-card h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        /* Approach Section */
-        .approach {
-            padding: 5rem 2rem;
-            background: var(--white);
-        }
-        
-        .approach-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .step {
-            text-align: center;
-            position: relative;
-        }
-        
-        .step-number {
-            width: 50px;
-            height: 50px;
-            background: var(--secondary);
-            color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin: 0 auto 1rem;
-        }
-        
-        /* Case Study Section */
-        .case-study {
-            padding: 5rem 2rem;
-            background: var(--light-bg);
-        }
-        
-        .case-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-        
-        .case-tab {
-            background: var(--white);
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-        }
-        
-        .case-tab:hover {
-            background: var(--accent);
-            color: var(--white);
-            transform: translateY(-2px);
-        }
-        
-        .case-tab.active {
-            background: var(--accent);
-            color: var(--white);
-        }
-        
-        .case-study-content {
-            background: var(--white);
-            padding: 3rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            max-width: 900px;
-            margin: 0 auto;
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .case-study-content.active {
-            display: block;
-        }
-        
-        .case-study-header {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .client-badge {
-            background: var(--accent);
-            color: var(--white);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        
-        .challenge-box {
-            background: #fff3cd;
-            border-left: 4px solid var(--secondary);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 5px;
-        }
-        
-        .solution-points {
-            list-style: none;
-            margin: 1.5rem 0;
-        }
-        
-        .solution-points li {
-            padding: 0.75rem 0;
-            padding-left: 2rem;
-            position: relative;
-        }
-        
-        .solution-points li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-        
-        /* Impact Metrics */
-        .impact-metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .metric {
-            background: var(--gradient);
-            color: var(--white);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        .metric-value {
-            font-size: 2rem;
-            font-weight: 700;
-            display: block;
-        }
-        
-        /* AI Lab Section */
-        .ai-lab {
-            padding: 5rem 2rem;
-            background: var(--white);
-        }
-        
-        .ai-interface {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-        
-        .chat-container {
-            background: var(--light-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .chat-header {
-            background: var(--gradient);
-            color: var(--white);
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .chat-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
-        .chat-status {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        
-        .chat-messages {
-            height: 300px;
-            overflow-y: auto;
-            padding: 2rem;
-            background: var(--white);
-        }
-        
-        .ai-message, .user-message {
-            margin-bottom: 1.5rem;
-        }
-        
-        .ai-message .message-content {
-            background: var(--light-bg);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border-left: 3px solid var(--accent);
-        }
-        
-        .user-message .message-content {
-            background: var(--gradient);
-            color: var(--white);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-left: 20%;
-        }
-        
-        .chat-input-container {
-            padding: 1.5rem;
-            border-top: 1px solid #eee;
-            background: var(--white);
-        }
-        
-        .chat-input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
-            resize: none;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-        
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        
-        .send-button {
-            background: var(--accent);
-            color: var(--white);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1rem;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-        
-        .send-button:hover {
-            background: #357abd;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.3);
-        }
-        
-        .send-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .report-container {
-            background: var(--white);
-            padding: 3rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .report-container h3 {
-            color: var(--primary);
-            margin-bottom: 2rem;
-            font-size: 1.8rem;
-        }
-        
-        .report-section {
-            margin-bottom: 2.5rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .report-section:last-child {
-            border-bottom: none;
-        }
-        
-        .report-section h4 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .phase-icon {
-            width: 30px;
-            height: 30px;
-            background: var(--gradient);
-            color: var(--white);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-        
-        .report-list {
-            list-style: none;
-            margin-left: 1rem;
-        }
-        
-        .report-list li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-        
-        .report-list li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--secondary);
-            font-weight: 700;
-        }
-        
-        .new-analysis-btn {
-            background: var(--secondary);
-            color: var(--white);
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .new-analysis-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(243, 156, 18, 0.3);
-        }
-        
-        .ai-disclaimer {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .loading-dots {
-            display: inline-flex;
-            gap: 4px;
-        }
-        
-        .loading-dots span {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-        
-        .loading-dots span:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-        
-        .loading-dots span:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-        
-        @keyframes bounce {
-            0%, 80%, 100% {
-                transform: scale(0);
-            }
-            40% {
-                transform: scale(1);
-            }
-        }
-        
-        /* CTA Section */
-        .cta {
-            background: var(--primary);
-            color: var(--white);
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-        
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background: var(--secondary);
-            color: var(--white);
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(243, 156, 18, 0.4);
-        }
-        
-        /* Contact Section */
-        .contact {
-            padding: 5rem 2rem;
-            background: var(--white);
-        }
-        
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-        
-        .contact-item {
-            text-align: center;
-        }
-        
-        .contact-item a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--primary);
-            color: var(--white);
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .case-tabs {
-                gap: 0.5rem;
-            }
-            
-            .case-tab {
-                font-size: 0.85rem;
-                padding: 0.6rem 1rem;
-            }
-            
-            .case-study-content {
-                padding: 2rem;
-            }
-            
-            .chat-messages {
-                height: 250px;
-            }
-            
-            .user-message .message-content {
-                margin-left: 0;
-            }
-            
-            .report-container {
-                padding: 2rem;
-            }
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            filter: blur(100px);
+        }
+        .tab-active {
+            background-color: #3b82f6; /* bg-blue-600 */
+            color: #ffffff;
         }
     </style>
 </head>
-<body>
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">Abdus Salam</a>
-            <ul class="nav-links">
-                <li><a href="#services">Services</a></li>
-                <li><a href="#approach">Approach</a></li>
-                <li><a href="#case-studies">Case Studies</a></li>
-                <li><a href="#ai-lab">AI Lab</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+<body class="antialiased">
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Strategic Problem Solver & Product Leader</h1>
-            <p class="subtitle">Transforming Complex Challenges into Measurable Business Value</p>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-number">9+</span>
-                    <span class="stat-label">Years Experience</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">£5.7M+</span>
-                    <span class="stat-label">Cost Savings Delivered</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">2000+</span>
-                    <span class="stat-label">Features Shipped</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">144+</span>
-                    <span class="stat-label">Sprints Facilitated</span>
-                </div>
-            </div>
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glassmorphism">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white tracking-wider">Abdus Salam</a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#clients" class="text-slate-300 hover:text-blue-400 transition-colors">Clients</a>
+                <a href="#missions" class="text-slate-300 hover:text-blue-400 transition-colors">Case Studies</a>
+                <a href="#blueprint" class="text-slate-300 hover:text-blue-400 transition-colors">Process</a>
+                <a href="#about" class="text-slate-300 hover:text-blue-400 transition-colors">About</a>
+                <a href="#ai-lab" class="text-slate-300 hover:text-blue-400 transition-colors">AI Lab</a>
+            </nav>
+            <a href="#contact" class="hidden md:inline-block bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105">Engage</a>
+            <button id="mobile-menu-btn" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
         </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">How I Can Help You</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">🎯</div>
-                    <h3>Product Strategy & Discovery</h3>
-                    <p>Transform vague requirements into clear product vision. I'll help you identify the real problems worth solving through structured discovery, stakeholder alignment, and data-driven prioritization.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🚀</div>
-                    <h3>Agile Transformation</h3>
-                    <p>Move from chaos to clarity with proven agile frameworks. I'll optimize your delivery processes, build high-performing teams, and create sustainable practices that deliver results sprint after sprint.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">📊</div>
-                    <h3>Process Optimization</h3>
-                    <p>Eliminate bottlenecks and inefficiencies that cost you time and money. Using data analytics and lean principles, I'll streamline your workflows and boost team productivity by up to 40%.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">💡</div>
-                    <h3>Digital Innovation</h3>
-                    <p>Stay ahead with AI-driven solutions and modern tech stacks. From headless architectures to automated workflows, I'll help you leverage cutting-edge technology for competitive advantage.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🎨</div>
-                    <h3>MVP Development</h3>
-                    <p>Get to market faster with lean MVPs that validate your ideas. I'll help you define, build, and iterate on products that users love while minimizing risk and investment.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">📈</div>
-                    <h3>Growth & Scaling</h3>
-                    <p>Scale your product and operations efficiently. From marketplace launches to international expansion, I'll create the playbooks and processes that enable sustainable growth.</p>
-                </div>
-            </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900/80 backdrop-blur-sm">
+            <nav class="flex flex-col items-center space-y-4 py-6">
+                <a href="#clients" class="text-slate-300 hover:text-blue-400 transition-colors">Clients</a>
+                <a href="#missions" class="text-slate-300 hover:text-blue-400 transition-colors">Case Studies</a>
+                <a href="#blueprint" class="text-slate-300 hover:text-blue-400 transition-colors">Process</a>
+                <a href="#about" class="text-slate-300 hover:text-blue-400 transition-colors">About</a>
+                <a href="#ai-lab" class="text-slate-300 hover:text-blue-400 transition-colors">AI Lab</a>
+                <a href="#contact" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105 mt-4">Engage</a>
+            </nav>
         </div>
-    </section>
+    </header>
 
-    <!-- Approach Section -->
-    <section id="approach" class="approach">
-        <div class="container">
-            <h2 class="section-title">My Strategic Approach</h2>
-            <div class="approach-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Discover</h3>
-                    <p>Deep dive into your challenge through stakeholder interviews, data analysis, and process mapping to uncover root causes.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Define</h3>
-                    <p>Frame the problem clearly, develop testable hypotheses, and align all stakeholders on objectives and success metrics.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Design</h3>
-                    <p>Create innovative solutions using proven frameworks, rapid prototyping, and continuous stakeholder feedback.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Deliver</h3>
-                    <p>Execute with agility, measure impact rigorously, and iterate based on real-world data to maximize value.</p>
-                </div>
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center text-center overflow-hidden">
+            <div class="hero-canvas-container" id="hero-canvas-container"></div>
+            <div class="relative z-10 p-6 max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4 animate-fade-in-down">
+                    Architect of <span class="text-blue-400">Strategic Improvement</span> & AI-Driven Transformation.
+                </h1>
+                <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-8 animate-fade-in-up">
+                    I partner with executive teams to move beyond incremental change. By embedding a rigorous framework for critique and execution, we deconstruct complexity, design resilient strategies, and deliver measurable, AI-powered improvements to your core products and processes.
+                </p>
+                <a href="#missions" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 inline-block animate-fade-in">
+                    View Executed Missions
+                </a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Case Studies Section -->
-    <section id="case-studies" class="case-study">
-        <div class="container">
-            <h2 class="section-title">Proven Results: Case Studies</h2>
-            
-            <!-- Case Study Tabs -->
-            <div class="case-tabs">
-                <button class="case-tab active" onclick="showCase(0)">EA Technology</button>
-                <button class="case-tab" onclick="showCase(1)">Boohoo Marketplace</button>
-                <button class="case-tab" onclick="showCase(2)">AI Transformation</button>
-                <button class="case-tab" onclick="showCase(3)">NS&I Digital</button>
-                <button class="case-tab" onclick="showCase(4)">Efficiency Rescue</button>
-                <button class="case-tab" onclick="showCase(5)">Healthcare Innovation</button>
-            </div>
-            
-            <!-- Case Study 1: EA Technology -->
-            <div class="case-study-content active" data-case="0">
-                <div class="case-study-header">
-                    <h3>Revolutionising Connection Impact Assessments</h3>
-                    <span class="client-badge">Energy Sector</span>
-                </div>
+        <!-- Client Matrix Section -->
+        <section id="clients" class="py-20 sm:py-28 bg-gray-900/50 relative overflow-hidden">
+             <div class="section-glow top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-blue-500"></div>
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Client Portfolio</h2>
+                <p class="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">A history of delivering transformative value for industry leaders and innovators.</p>
                 
-                <div class="challenge-box">
-                    <h4>The Challenge</h4>
-                    <p>Two high-value Distribution Network Operators reported that their connection assessment workflow was "too time-consuming" and "not delivering the right value" - a critical issue affecting their ability to manage the renewable energy transition.</p>
-                </div>
-                
-                <h4>My Strategic Response</h4>
-                <ul class="solution-points">
-                    <li>Reframed vague feedback into testable hypotheses about process bottlenecks and strategic gaps</li>
-                    <li>Designed a comprehensive 4-week discovery campaign with structured stakeholder engagement</li>
-                    <li>Created the GRID prioritization framework to objectively assess opportunities</li>
-                    <li>Developed a stakeholder matrix covering the entire value chain from engineers to regulators</li>
-                    <li>Proposed an integrated "single pane of glass" solution aligned with new regulatory requirements</li>
-                </ul>
-                
-                <h4>Projected Impact</h4>
-                <div class="impact-metrics">
-                    <div class="metric">
-                        <span class="metric-value">30%</span>
-                        <span>Time Reduction</span>
+                <div class="client-marquee w-full inline-block whitespace-nowrap overflow-hidden">
+                    <div class="client-marquee-inner">
+                        <!-- Client logos will be duplicated by JS for seamless scroll -->
                     </div>
-                    <div class="metric">
-                        <span class="metric-value">Quick Win</span>
-                        <span>Smart Portal MVP</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">Strategic</span>
-                        <span>CAP Compliance</span>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 2rem;"><strong>Key Takeaway:</strong> By treating feedback as a starting point for strategic discovery rather than a feature request, I transformed a vague complaint into a structured product opportunity with clear value propositions and delivery roadmap.</p>
-            </div>
-            
-            <!-- Case Study 2: Boohoo Marketplace -->
-            <div class="case-study-content" data-case="1">
-                <div class="case-study-header">
-                    <h3>Launching Multi-Brand Marketplace at Scale</h3>
-                    <span class="client-badge">E-commerce</span>
-                    <span class="client-badge" style="background: var(--secondary);">Debenhams Group</span>
-                </div>
-                
-                <div class="challenge-box">
-                    <h4>The Challenge</h4>
-                    <p>Boohoo Group needed to launch a marketplace to expand their product offering and revenue streams, but faced complex technical integration challenges and tight deadlines across multiple flagship brands.</p>
-                </div>
-                
-                <h4>My Strategic Response</h4>
-                <ul class="solution-points">
-                    <li>Conducted stakeholder interviews and requirements workshops to define clear MVP scope</li>
-                    <li>Created theme-based sprint roadmap to manage dependencies across 4 brand platforms</li>
-                    <li>Developed scalable rollout playbooks that enabled rapid replication across brands</li>
-                    <li>Implemented "JFDI" rapid response framework to handle critical blockers without derailing timeline</li>
-                    <li>Built cross-functional alignment through regular demos and collaborative planning sessions</li>
-                </ul>
-                
-                <h4>Delivered Impact</h4>
-                <div class="impact-metrics">
-                    <div class="metric">
-                        <span class="metric-value">6 Months</span>
-                        <span>Launch Timeline</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">2 Brands</span>
-                        <span>Successfully Launched</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">Scalable</span>
-                        <span>Reusable Process</span>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 2rem;"><strong>Key Takeaway:</strong> Successfully delivered complex marketplace integration on time by balancing strategic planning with tactical agility, creating reusable processes that accelerated subsequent brand launches.</p>
-            </div>
-            
-            <!-- Case Study 3: AI Transformation -->
-            <div class="case-study-content" data-case="2">
-                <div class="case-study-header">
-                    <h3>AI-First Product Transformation</h3>
-                    <span class="client-badge">Retail Tech</span>
-                    <span class="client-badge" style="background: var(--secondary);">Debenhams Group</span>
-                </div>
-                
-                <div class="challenge-box">
-                    <h4>The Challenge</h4>
-                    <p>Debenhams Group's legacy systems were creating inefficiencies across customer service, product discovery, and operations, requiring a strategic AI implementation to remain competitive.</p>
-                </div>
-                
-                <h4>My Strategic Response</h4>
-                <ul class="solution-points">
-                    <li>Led discovery to identify high-impact AI opportunities across the customer journey</li>
-                    <li>Implemented CSBOT for automated customer service, reducing response times</li>
-                    <li>Deployed Looklet AI for virtual try-on experiences, improving conversion rates</li>
-                    <li>Integrated Spinach AI for meeting intelligence and action item tracking</li>
-                    <li>Overhauled key functionality including address lookup, search, and checkout flows</li>
-                </ul>
-                
-                <h4>Delivered Impact</h4>
-                <div class="impact-metrics">
-                    <div class="metric">
-                        <span class="metric-value">£5M</span>
-                        <span>Annual Savings</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">3 AI Tools</span>
-                        <span>Implemented</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">40%</span>
-                        <span>Efficiency Gain</span>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 2rem;"><strong>Key Takeaway:</strong> Demonstrated how strategic AI adoption can transform traditional retail operations, delivering both immediate cost savings and long-term competitive advantages.</p>
-            </div>
-            
-            <!-- Case Study 4: NS&I Digital Transformation -->
-            <div class="case-study-content" data-case="3">
-                <div class="case-study-header">
-                    <h3>Government Digital Innovation</h3>
-                    <span class="client-badge">Public Sector</span>
-                    <span class="client-badge" style="background: var(--secondary);">NS&I / Atos</span>
-                </div>
-                
-                <div class="challenge-box">
-                    <h4>The Challenge</h4>
-                    <p>NS&I needed to digitize legacy paper-based processes and launch the UK's first Green Savings Bond while maintaining strict regulatory compliance and security standards.</p>
-                </div>
-                
-                <h4>My Strategic Response</h4>
-                <ul class="solution-points">
-                    <li>Mapped end-to-end customer journeys to identify digitization opportunities</li>
-                    <li>Built business case demonstrating ROI of digital transformation</li>
-                    <li>Led cross-functional team through agile delivery within PRINCE2 environment</li>
-                    <li>Created stakeholder alignment through workshops and sprint demos</li>
-                    <li>Developed agile playbooks to mature team practices and accelerate delivery</li>
-                </ul>
-                
-                <h4>Delivered Impact</h4>
-                <div class="impact-metrics">
-                    <div class="metric">
-                        <span class="metric-value">£500K+</span>
-                        <span>Cost Savings</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">UK First</span>
-                        <span>Green Bond Launch</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">Award</span>
-                        <span>Entrepreneur of Year</span>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 2rem;"><strong>Key Takeaway:</strong> Successfully balanced innovation with regulatory requirements, proving that government organizations can deliver cutting-edge digital products while maintaining public trust.</p>
-            </div>
-            
-            <!-- Case Study 5: QA Efficiency Rescue -->
-            <div class="case-study-content" data-case="4">
-                <div class="case-study-header">
-                    <h3>QA Resource Optimization Crisis</h3>
-                    <span class="client-badge">Process Improvement</span>
-                    <span class="client-badge" style="background: var(--secondary);">Debenhams Group</span>
-                </div>
-                
-                <div class="challenge-box">
-                    <h4>The Challenge</h4>
-                    <p>Debenhams Group was hemorrhaging £45K monthly due to inefficient QA resourcing, with external contractors underutilized and internal talent overwhelmed by repetitive tasks.</p>
-                </div>
-                
-                <h4>My Strategic Response</h4>
-                <ul class="solution-points">
-                    <li>Conducted time-and-motion study to identify resource utilization patterns</li>
-                    <li>Automated repetitive testing tasks using modern testing frameworks</li>
-                    <li>Restructured team to leverage internal resources more effectively</li>
-                    <li>Implemented skill matrix and cross-training program</li>
-                    <li>Created transparent resource allocation dashboard for better visibility</li>
-                </ul>
-                
-                <h4>Delivered Impact</h4>
-                <div class="impact-metrics">
-                    <div class="metric">
-                        <span class="metric-value">£45K</span>
-                        <span>Monthly Savings</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">Immediate</span>
-                        <span>Implementation</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">70%</span>
-                        <span>Utilization Increase</span>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 2rem;"><strong>Key Takeaway:</strong> Sometimes the biggest wins come from optimizing what you already have. By focusing on process efficiency and smart automation, I delivered immediate and sustainable cost savings.</p>
-            </div>
-            
-            <!-- Case Study 6: Dental Surgery -->
-            <div class="case-study-content" data-case="5">
-                <div class="case-study-header">
-                    <h3>Healthcare Practice Digital Transformation</h3>
-                    <span class="client-badge">Healthcare</span>
-                    <span class="client-badge" style="background: var(--secondary);">Private Dental Surgery</span>
-                </div>
-                
-                <div class="challenge-box">
-                    <h4>The Challenge</h4>
-                    <p>A traditional dental surgery was struggling with inefficient booking systems, poor patient communication, and untapped revenue potential from private treatments, all while maintaining NHS service obligations.</p>
-                </div>
-                
-                <h4>My Strategic Response</h4>
-                <ul class="solution-points">
-                    <li>Applied agile methodologies to healthcare operations, a novel approach in the sector</li>
-                    <li>Optimized booking capacity using data analytics to identify and fill scheduling gaps</li>
-                    <li>Implemented patient feedback loops to improve service quality and experience</li>
-                    <li>Created targeted marketing strategies for high-value private treatments</li>
-                    <li>Modernized patient communication workflows with automated reminders and follow-ups</li>
-                </ul>
-                
-                <h4>Delivered Impact</h4>
-                <div class="impact-metrics">
-                    <div class="metric">
-                        <span class="metric-value">60%</span>
-                        <span>Revenue Increase</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">Agile</span>
-                        <span>In Healthcare</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-value">5-Star</span>
-                        <span>Patient Reviews</span>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 2rem;"><strong>Key Takeaway:</strong> Strategic thinking and modern methodologies aren't limited to tech companies. By applying product management principles to healthcare operations, I proved that any industry can benefit from data-driven transformation.</p>
-            </div>
-            
-            <!-- Results Summary -->
-            <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 10px;">
-                <h3 style="color: var(--primary); margin-bottom: 1rem;">Across These Projects</h3>
-                <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">From enterprise e-commerce to government digital transformation, I've consistently delivered:</p>
-                <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
-                    <div><strong style="color: var(--accent); font-size: 1.3rem;">£5.7M+</strong><br>Total Savings</div>
-                    <div><strong style="color: var(--accent); font-size: 1.3rem;">6 Industries</strong><br>Transformed</div>
-                    <div><strong style="color: var(--accent); font-size: 1.3rem;">100%</strong><br>On-Time Delivery</div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- AI Lab Section -->
-    <section id="ai-lab" class="ai-lab">
-        <div class="container">
-            <h2 class="section-title">AI Strategy Lab</h2>
-            <p style="text-align: center; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto;">
-                Experience my strategic problem-solving approach powered by AI. Describe your business challenge and receive a customized strategic report following my proven 4D methodology.
-            </p>
-            
-            <div class="ai-interface">
-                <div class="chat-container">
-                    <div class="chat-header">
-                        <span class="chat-title">🤖 Strategic AI Assistant</span>
-                        <span class="chat-status">Ready to analyze</span>
+        <!-- Missions Section (Case Studies) -->
+        <section id="missions" class="py-20 sm:py-28 relative">
+            <div class="section-glow bottom-0 right-0 w-1/2 h-1/2 bg-indigo-500"></div>
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 uppercase tracking-widest">Executed Missions</h2>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">A portfolio of strategic interventions and their material impact.</p>
+                </div>
+
+                <div class="max-w-6xl mx-auto">
+                    <!-- Tab Headers -->
+                    <div id="case-study-tabs" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                        <!-- Tabs will be generated by JS -->
                     </div>
+
+                    <!-- Tab Content -->
+                    <div id="case-study-content" class="relative">
+                        <!-- Content will be injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Blueprint Section (Process) -->
+        <section id="blueprint" class="py-20 sm:py-28 bg-gray-900/50 relative">
+            <div class="section-glow top-0 left-0 w-1/2 h-1/2 bg-purple-500"></div>
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">The Improvement Architecture</h2>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">My battle-tested framework for turning strategic ambiguity into executable clarity.</p>
+                </div>
+
+                <div class="relative max-w-5xl mx-auto">
+                    <!-- The connecting line -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-700 -translate-y-1/2"></div>
                     
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="ai-message">
-                            <div class="message-content">
-                                👋 Hello! I'm your strategic AI assistant. Tell me about a business challenge you're facing, and I'll create a comprehensive strategic report using Abdus's proven 4D methodology: Discover, Define, Design, and Deliver.
-                                
-                                <br><br>Try describing challenges like:
-                                <ul style="margin-top: 0.5rem;">
-                                    <li>• "Our customer onboarding process takes too long"</li>
-                                    <li>• "We need to improve our data analytics capabilities"</li>
-                                    <li>• "Our development team struggles with delivery predictability"</li>
-                                </ul>
+                    <div class="grid md:grid-cols-4 gap-12 md:gap-8">
+                        <!-- Step 1: Discover -->
+                        <div class="process-step text-center md:text-left relative">
+                            <div class="flex justify-center md:justify-start items-center mb-4">
+                                <div class="bg-gray-800 border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center text-blue-400 font-bold text-2xl z-10">01</div>
+                                <h3 class="text-2xl font-semibold text-white ml-4">Discover</h3>
                             </div>
+                            <p class="text-slate-400">Deconstruct the problem space through quantitative analysis and qualitative intelligence gathering to expose foundational assumptions.</p>
+                        </div>
+                        <!-- Step 2: Define -->
+                        <div class="process-step text-center md:text-left relative">
+                            <div class="flex justify-center md:justify-start items-center mb-4">
+                                <div class="bg-gray-800 border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center text-blue-400 font-bold text-2xl z-10">02</div>
+                                <h3 class="text-2xl font-semibold text-white ml-4">Define</h3>
+                            </div>
+                            <p class="text-slate-400">Architect a high-leverage strategy with clear objectives (OKRs), testable hypotheses, and defined success metrics from day one.</p>
+                        </div>
+                        <!-- Step 3: Design -->
+                        <div class="process-step text-center md:text-left relative">
+                            <div class="flex justify-center md:justify-start items-center mb-4">
+                                <div class="bg-gray-800 border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center text-blue-400 font-bold text-2xl z-10">03</div>
+                                <h3 class="text-2xl font-semibold text-white ml-4">Design</h3>
+                            </div>
+                            <p class="text-slate-400">Co-create and validate solutions through rapid prototyping and continuous, actionable feedback loops in a psychologically safe environment.</p>
+                        </div>
+                        <!-- Step 4: Deliver -->
+                        <div class="process-step text-center md:text-left relative">
+                            <div class="flex justify-center md:justify-start items-center mb-4">
+                                <div class="bg-gray-800 border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center text-blue-400 font-bold text-2xl z-10">04</div>
+                                <h3 class="text-2xl font-semibold text-white ml-4">Deliver</h3>
+                            </div>
+                            <p class="text-slate-400">Embed with teams to drive execution with precision and agility, anchoring new capabilities into the organizational culture.</p>
                         </div>
                     </div>
-                    
-                    <div class="chat-input-container">
-                        <textarea 
-                            id="userInput" 
-                            class="chat-input" 
-                            placeholder="Describe your business challenge..."
-                            rows="3"
-                        ></textarea>
-                        <button class="send-button" onclick="generateReport()">
-                            Generate Strategic Report
-                        </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="py-20 sm:py-28 relative">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-5 gap-12 items-center">
+                    <div class="md:col-span-2">
+                        <img src="https://placehold.co/500x500/1e293b/475569?text=Abdus+Salam" alt="Abdus Salam Headshot" class="rounded-lg shadow-2xl w-full h-auto object-cover">
+                    </div>
+                    <div class="md:col-span-3">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">"Strategy without execution is hallucination."</h2>
+                        <div class="space-y-4 text-slate-300 text-lg">
+                            <p>I operate at the nexus of strategy, technology, and execution. For over a decade, I've partnered with C-level leaders to transform ambitious vision into tangible enterprise value. My professional philosophy is rooted in the belief that sustainable growth is not born from isolated projects, but from building a systemic capability for continuous improvement. I don't just solve problems; I architect the engine for solving them, embedding a culture of critical inquiry and data-driven decision-making deep within an organization.</p>
+                            <p>My approach is both analytical and deeply human. I leverage frameworks from Kaizen to Disruptive Innovation, but I know that these tools are inert without a foundation of psychological safety and a collective growth mindset. By embedding with your teams, I work to de-risk transformation, foster a culture of shared ownership, and build the resilient, agile processes required to win in today's market. Success, for me, is not a launch date—it's the demonstrable, lasting impact on your bottom line and your organization's capacity to adapt and thrive.</p>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- AI Strategy Lab Section -->
+        <section id="ai-lab" class="py-20 sm:py-28 bg-gray-900/50 relative">
+            <div class="section-glow bottom-0 -left-1/4 w-1/2 h-1/2 bg-teal-500"></div>
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">AI Strategy Lab</h2>
+                <p class="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">Receive an instant, AI-powered strategic analysis of your business challenge.</p>
                 
-                <div class="report-container" id="reportContainer" style="display: none;">
-                    <h3>Strategic Analysis Report</h3>
-                    <div id="reportContent"></div>
-                    <button class="new-analysis-btn" onclick="startNewAnalysis()">New Analysis</button>
-                </div>
-            </div>
-            
-            <div class="ai-disclaimer">
-                <p><strong>Note:</strong> This is a demonstration of how AI can enhance strategic consulting. In production, this would connect to advanced AI models to provide even more detailed and customized insights.</p>
-            </div>
-        </div>
-    </section>
+                <div class="max-w-3xl mx-auto glassmorphism rounded-lg p-8">
+                    <div class="w-full">
+                        <label for="business-challenge" class="block text-left text-slate-300 font-semibold mb-2">Describe your business challenge or objective:</label>
+                        <textarea id="business-challenge" rows="4" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., 'Reduce customer churn by 15% in the next quarter' or 'Improve our new user onboarding flow to increase activation rates.'"></textarea>
+                        <button id="generate-blueprint-btn" class="mt-6 w-full bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <span id="btn-text">Generate Strategic Blueprint</span>
+                            <svg id="btn-loader" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </button>
+                    </div>
 
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to Transform Your Challenges into Opportunities?</h2>
-            <p>With a proven track record of delivering £5.7M+ in value across multiple industries, let's discuss how strategic problem-solving can drive measurable results for your organization.</p>
-            <a href="#contact" class="cta-button">Start a Conversation</a>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Let's Connect</h2>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <h4>Email</h4>
-                    <a href="mailto:salam@bdus.org">salam@bdus.org</a>
-                </div>
-                <div class="contact-item">
-                    <h4>LinkedIn</h4>
-                    <a href="https://linkedin.com/in/po-abdus-salam" target="_blank">linkedin.com/in/po-abdus-salam</a>
-                </div>
-                <div class="contact-item">
-                    <h4>Location</h4>
-                    <p>Manchester, UK</p>
+                    <div id="ai-output-container" class="mt-8 text-left hidden">
+                        <!-- AI generated content will appear here -->
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 sm:py-28 relative">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Engage</h2>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">Ready to architect your next strategic advantage? Let's connect.</p>
+                </div>
+                <form class="max-w-xl mx-auto">
+                    <div class="mb-4">
+                        <label for="name" class="block text-slate-300 mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-slate-300 mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block text-slate-300 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Abdus Salam. Strategic Problem Solver & Product Leader.</p>
+    <footer class="bg-gray-900/50 border-t border-gray-800 py-12">
+        <div class="container mx-auto px-6 text-center text-slate-400">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#clients" class="hover:text-blue-400 transition-colors">Clients</a>
+                <a href="#missions" class="hover:text-blue-400 transition-colors">Case Studies</a>
+                <a href="#blueprint" class="hover:text-blue-400 transition-colors">Process</a>
+                <a href="#about" class="hover:text-blue-400 transition-colors">About</a>
+                <a href="#ai-lab" class="hover:text-blue-400 transition-colors">AI Lab</a>
+            </div>
+            <div class="flex justify-center mb-6">
+                <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-blue-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Abdus Salam. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+    document.addEventListener('DOMContentLoaded', () => {
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+        // --- CORE DATA ---
+        const clients = [
+            'boohoo', 'karen millen', 'debenhams', 'prettylittlething', 'atos', 'olympics', 
+            'ns&i', 'court funds office', 'sopra steria', 'edf renewables', 
+            'nuclear decommissioning authority', 'sellafields', 'hovia', 'atrafloor', 
+            'nastygal', 'salesforce', 'EA Technology', 'Milexa Group'
+        ];
+
+        const caseStudies = [
+            {
+                id: 'boohoo',
+                client: 'Boohoo Group',
+                sector: 'E-commerce',
+                challenge: 'To unify a fragmented analytics framework across multiple acquired brands, creating a single source of truth to drive marketing efficiency at scale.',
+                solution: 'Architected and led the implementation of a centralized data warehouse and a standardized BI suite using Looker. This created a unified view of performance, enabling sophisticated cross-brand analysis and optimizing a multi-million-pound marketing budget.',
+                metrics: {
+                    label: 'Marketing ROI Improvement',
+                    value: 22,
+                    type: 'bar',
+                    data: [15, 25, 20, 30, 22],
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Avg']
                 }
-            });
-        });
+            },
+            {
+                id: 'ea-tech',
+                client: 'EA Technology',
+                sector: 'Energy & Utilities',
+                challenge: 'The client faced an existential threat: their legacy on-premise software for monitoring high-voltage assets was becoming obsolete. They needed to pivot to a modern, scalable SaaS platform.',
+                solution: 'Led the strategic pivot to a cloud-native SaaS model on AWS. I defined the product architecture, introduced a recurring revenue model, and managed the agile development lifecycle to ensure a seamless migration for high-value enterprise clients.',
+                metrics: {
+                    label: 'Time to Market Reduction',
+                    value: 40,
+                    type: 'bar',
+                    data: [12, 9, 8, 6],
+                    labels: ['Legacy', 'Phase 1', 'Phase 2', 'New Platform']
+                }
+            },
+            {
+                id: 'nsi',
+                client: 'NS&I',
+                sector: 'Public Sector Finance',
+                challenge: 'To transform the digital customer experience for over 25 million savers, aiming to significantly reduce operational overhead from call centers and paper-based processes.',
+                solution: 'Oversaw the strategic redesign of the secure online banking portal. We implemented a suite of self-service features, including an AI-powered chatbot and secure messaging, which drove a significant channel shift to digital and reduced operational costs.',
+                metrics: {
+                    label: 'Digital Self-Service Adoption',
+                    value: 65,
+                    type: 'doughnut',
+                    data: [65, 35],
+                    labels: ['Digital', 'Traditional']
+                }
+            },
+            {
+                id: 'karen-millen',
+                client: 'Karen Millen',
+                sector: 'E-commerce',
+                challenge: 'In a hyper-competitive market, the brand needed to evolve beyond generic marketing to enhance customer loyalty and increase average order value (AOV) through deep personalization.',
+                solution: 'Led the integration of a new Customer Data Platform (CDP) and an AI-powered recommendation engine. This enabled hyper-personalized customer journeys across email and the website, directly increasing engagement and AOV.',
+                metrics: {
+                    label: 'Average Order Value (AOV) Uplift',
+                    value: 18,
+                    type: 'bar',
+                    data: [5, 10, 12, 18],
+                    labels: ['Baseline', 'Q1', 'Q2', 'Q3']
+                }
+            },
+            {
+                id: 'edf',
+                client: 'EDF Renewables',
+                sector: 'Renewable Energy',
+                challenge: 'To create a competitive advantage by moving from a reactive to a predictive maintenance model for vast wind turbine fleets, aiming to minimize costly downtime and optimize energy output.',
+                solution: 'Architected a predictive maintenance platform leveraging IoT sensor data and machine learning models to forecast component failures. The resulting operational dashboard allowed for proactive maintenance scheduling, significantly boosting asset lifespan and energy generation.',
+                metrics: {
+                    label: 'Operational Downtime Reduction',
+                    value: 30,
+                    type: 'bar',
+                    data: [15, 20, 25, 30],
+                    labels: ['Before', '6 Months', '12 Months', '18 Months']
+                }
+            },
+            {
+                id: 'milexa',
+                client: 'Milexa Group',
+                sector: 'E-commerce / Manufacturing',
+                challenge: 'To re-engineer the complex "design-to-delivery" workflow for custom-printed wallpapers, which was plagued by production errors and long lead times, impacting customer satisfaction.',
+                solution: 'Conducted an end-to-end value stream analysis and implemented a new digital workflow management system. This created a seamless integration between the e-commerce front-end and the print-production floor, automating job ticketing and quality assurance.',
+                metrics: {
+                    label: 'Production Lead Time (Days)',
+                    value: 60,
+                    type: 'line',
+                    data: [5, 4, 3, 2],
+                    labels: ['Start', 'Phase 1', 'Phase 2', 'End']
+                }
+            }
+        ];
 
-        // Case study tab switching
-        function showCase(caseIndex) {
-            // Remove active class from all tabs and content
-            document.querySelectorAll('.case-tab').forEach(tab => {
-                tab.classList.remove('active');
+        // --- INITIALIZATION ---
+
+        initMobileMenu();
+        initHeaderScroll();
+        populateClients();
+        initCaseStudies();
+        initAnimations();
+        initAiLab();
+        initFooter();
+        initThreeJSBackground();
+
+        // --- FUNCTIONS ---
+
+        function initMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
             });
-            document.querySelectorAll('.case-study-content').forEach(content => {
-                content.classList.remove('active');
+            // Close menu when a link is clicked
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => menu.classList.add('hidden'));
             });
-            
-            // Add active class to selected tab and content
-            document.querySelectorAll('.case-tab')[caseIndex].classList.add('active');
-            document.querySelectorAll('.case-study-content')[caseIndex].classList.add('active');
         }
 
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+        function initHeaderScroll() {
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2');
+                    header.classList.remove('py-4');
+                } else {
+                    header.classList.add('py-4');
+                    header.classList.remove('py-2');
                 }
             });
-        }, observerOptions);
+        }
 
-        // Observe all service cards and steps
-        document.querySelectorAll('.service-card, .step').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-        // AI Lab Functions
-        function generateReport() {
-            const userInput = document.getElementById('userInput').value.trim();
-            if (!userInput) {
-                alert('Please describe your business challenge first.');
-                return;
-            }
-            
-            // Disable button and show loading
-            const sendButton = document.querySelector('.send-button');
-            sendButton.disabled = true;
-            sendButton.innerHTML = 'Analyzing... <div class="loading-dots"><span></span><span></span><span></span></div>';
-            
-            // Add user message to chat
-            const chatMessages = document.getElementById('chatMessages');
-            const userMessage = document.createElement('div');
-            userMessage.className = 'user-message';
-            userMessage.innerHTML = `<div class="message-content">${userInput}</div>`;
-            chatMessages.appendChild(userMessage);
-            
-            // Simulate AI processing
-            setTimeout(() => {
-                // Add AI response
-                const aiResponse = document.createElement('div');
-                aiResponse.className = 'ai-message';
-                aiResponse.innerHTML = `
-                    <div class="message-content">
-                        Excellent! I've analyzed your challenge and created a comprehensive strategic report using the 4D methodology. You can view the full analysis below.
+        function populateClients() {
+            const marqueeInner = document.querySelector('.client-marquee-inner');
+            const clientContent = clients.map(client => `
+                <div class="flex-shrink-0 w-auto mx-8 flex items-center justify-center">
+                    <span class="text-2xl font-semibold text-slate-400 tracking-widest uppercase">${client}</span>
+                </div>
+            `).join('');
+            // Duplicate for seamless scroll
+            marqueeInner.innerHTML = clientContent + clientContent;
+        }
+
+        function initCaseStudies() {
+            const tabsContainer = document.getElementById('case-study-tabs');
+            const contentContainer = document.getElementById('case-study-content');
+            let chartInstances = {};
+
+            // Generate tabs
+            caseStudies.forEach((study, index) => {
+                const tab = document.createElement('button');
+                tab.className = `px-4 py-2 text-sm md:px-6 md:py-3 font-semibold rounded-lg transition-colors duration-300 ${index === 0 ? 'tab-active' : 'bg-gray-800 hover:bg-gray-700 text-slate-300'}`;
+                tab.textContent = study.client;
+                tab.dataset.target = study.id;
+                tabsContainer.appendChild(tab);
+            });
+
+            // Generate content panes
+            caseStudies.forEach((study, index) => {
+                const contentPane = document.createElement('div');
+                contentPane.id = study.id;
+                contentPane.className = `case-study-pane ${index === 0 ? '' : 'hidden'}`;
+                contentPane.innerHTML = `
+                    <div class="glassmorphism rounded-lg p-8 md:p-12 border border-gray-700/50">
+                        <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                            <div>
+                                <span class="inline-block bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm font-semibold mb-4">${study.sector}</span>
+                                <h3 class="text-3xl font-bold text-white mb-4">${study.client}</h3>
+                                <h4 class="text-xl font-semibold text-slate-300 mb-2">The Challenge</h4>
+                                <p class="text-slate-400 mb-6">${study.challenge}</p>
+                                <h4 class="text-xl font-semibold text-slate-300 mb-2">The Strategic Solution</h4>
+                                <p class="text-slate-400">${study.solution}</p>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="text-xl font-semibold text-slate-300 mb-4">Key Metric: ${study.metrics.label}</h4>
+                                <div class="max-w-sm mx-auto h-64 md:h-80">
+                                    <canvas id="chart-${study.id}"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 `;
-                chatMessages.appendChild(aiResponse);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+                contentContainer.appendChild(contentPane);
+            });
+
+            // Tab click logic
+            tabsContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const targetId = e.target.dataset.target;
+
+                    // Update tab styles
+                    tabsContainer.querySelectorAll('button').forEach(tab => {
+                        tab.classList.remove('tab-active');
+                        tab.classList.add('bg-gray-800', 'hover:bg-gray-700', 'text-slate-300');
+                    });
+                    e.target.classList.add('tab-active');
+                    e.target.classList.remove('bg-gray-800', 'hover:bg-gray-700', 'text-slate-300');
+
+                    // Show/hide content panes
+                    contentContainer.querySelectorAll('.case-study-pane').forEach(pane => {
+                        pane.classList.add('hidden');
+                    });
+                    document.getElementById(targetId).classList.remove('hidden');
+                    
+                    // Re-render chart for the active tab
+                    renderChart(caseStudies.find(s => s.id === targetId));
+                }
+            });
+            
+            function renderChart(study) {
+                const chartId = `chart-${study.id}`;
+                if (chartInstances[chartId]) {
+                    chartInstances[chartId].destroy();
+                }
+                const ctx = document.getElementById(chartId).getContext('2d');
                 
-                // Generate and show report
-                showReport(userInput);
-                
-                // Reset button
-                sendButton.disabled = false;
-                sendButton.innerHTML = 'Generate Strategic Report';
-                document.getElementById('userInput').value = '';
-            }, 2000);
+                const chartConfig = {
+                    type: study.metrics.type,
+                    data: {
+                        labels: study.metrics.labels,
+                        datasets: [{
+                            label: study.metrics.label,
+                            data: study.metrics.data,
+                            backgroundColor: study.metrics.type === 'doughnut' 
+                                ? ['#3b82f6', '#374151'] 
+                                : 'rgba(59, 130, 246, 0.5)',
+                            borderColor: '#3b82f6',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: study.metrics.type === 'line' ? true : false,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: study.metrics.type === 'doughnut',
+                                position: 'bottom',
+                                labels: {
+                                    color: '#94a3b8' // slate-400
+                                }
+                            },
+                            tooltip: {
+                                titleColor: '#ffffff',
+                                bodyColor: '#e2e8f0',
+                                backgroundColor: '#1f2937',
+                            }
+                        },
+                        scales: study.metrics.type !== 'doughnut' ? {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                ticks: { color: '#94a3b8' }
+                            },
+                            x: {
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                ticks: { color: '#94a3b8' }
+                            }
+                        } : {},
+                        animation: {
+                            duration: 1500,
+                            easing: 'easeInOutQuart'
+                        }
+                    }
+                };
+                chartInstances[chartId] = new Chart(ctx, chartConfig);
+            }
+
+            // Initial chart render
+            renderChart(caseStudies[0]);
+        }
+
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Animate sections on scroll
+            const sections = gsap.utils.toArray('section');
+            sections.forEach((section, i) => {
+                gsap.from(section, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none none',
+                    },
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    ease: 'power3.out'
+                });
+            });
+
+            // Specific animations
+            gsap.from('.process-step', {
+                scrollTrigger: {
+                    trigger: '#blueprint',
+                    start: 'top 60%',
+                },
+                opacity: 0,
+                y: 40,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
         }
         
-        function showReport(challenge) {
-            const reportContainer = document.getElementById('reportContainer');
-            const reportContent = document.getElementById('reportContent');
+        function initAiLab() {
+            const generateBtn = document.getElementById('generate-blueprint-btn');
+            if (!generateBtn) return;
+
+            generateBtn.addEventListener('click', async () => {
+                const btnText = document.getElementById('btn-text');
+                const btnLoader = document.getElementById('btn-loader');
+                const challengeInput = document.getElementById('business-challenge');
+                const outputContainer = document.getElementById('ai-output-container');
+                const challenge = challengeInput.value.trim();
+
+                if (!challenge) {
+                    challengeInput.classList.add('ring-2', 'ring-red-500');
+                    challengeInput.placeholder = "A business challenge is required to generate a blueprint.";
+                    setTimeout(() => {
+                        challengeInput.classList.remove('ring-2', 'ring-red-500');
+                        challengeInput.placeholder = "e.g., 'Reduce customer churn by 15% in the next quarter' or 'Improve our new user onboarding flow to increase activation rates.'";
+                    }, 3000);
+                    return;
+                }
+
+                // Show loading state
+                btnText.classList.add('hidden');
+                btnLoader.classList.remove('hidden');
+                generateBtn.disabled = true;
+                outputContainer.innerHTML = '<div class="text-center text-slate-400">Generating your strategic blueprint...</div>';
+                outputContainer.classList.remove('hidden');
+
+                const prompt = `
+                    As an expert strategic consultant and "Architect of Improvement," analyze the following business challenge for a C-level executive audience.
+
+                    Business Challenge: "${challenge}"
+
+                    Your response MUST follow this structure precisely, using the specified delimiters:
+
+                    ##DIAGNOSIS
+                    First, diagnose the nature of the challenge. State whether it calls for "Continuous Incrementalism (Kaizen)" or "Disruptive Transformation." Provide a one-sentence justification for your choice.
+
+                    ##BLUEPRINT
+                    Next, provide a 4-step strategic blueprint based on the "Discover, Define, Design, Deliver" framework. For each step, provide two concrete, actionable bullet points tailored to your diagnosis (Kaizen or Disruption).
+
+                    ###Discover
+                    - [Actionable point 1]
+                    - [Actionable point 2]
+
+                    ###Define
+                    - [Actionable point 1]
+                    - [Actionable point 2]
+
+                    ###Design
+                    - [Actionable point 1]
+                    - [Actionable point 2]
+
+                    ###Deliver
+                    - [Actionable point 1]
+                    - [Actionable point 2]
+
+                    ##NEXT_STEP
+                    Finally, provide a single, compelling sentence encouraging the user to book a consultation to turn this high-level blueprint into a detailed, actionable roadmap.
+                `;
+
+                try {
+                    const apiKey = ""; // API key is handled by the environment
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    const payload = {
+                        contents: [{ role: "user", parts: [{ text: prompt }] }]
+                    };
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API request failed with status ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates[0].content.parts[0].text) {
+                        renderStructuredOutput(result.candidates[0].content.parts[0].text);
+                    } else {
+                        throw new Error("No valid content received from API.");
+                    }
+
+                } catch (error) {
+                    console.error("AI Strategy Lab Error:", error);
+                    outputContainer.innerHTML = `<p class="text-red-400">An error occurred while generating the blueprint. This may be a temporary issue. Please try refining your challenge or try again later. Details: ${error.message}</p>`;
+                } finally {
+                    // Hide loading state
+                    btnText.classList.remove('hidden');
+                    btnLoader.classList.add('hidden');
+                    generateBtn.disabled = false;
+                }
+            });
+        }
+        
+        function renderStructuredOutput(text) {
+            const outputContainer = document.getElementById('ai-output-container');
+
+            const sections = {
+                diagnosis: text.split('##DIAGNOSIS')[1]?.split('##BLUEPRINT')[0]?.trim(),
+                discover: text.split('###Discover')[1]?.split('###Define')[0]?.trim(),
+                define: text.split('###Define')[1]?.split('###Design')[0]?.trim(),
+                design: text.split('###Design')[1]?.split('###Deliver')[0]?.trim(),
+                deliver: text.split('###Deliver')[1]?.split('##NEXT_STEP')[0]?.trim(),
+                nextStep: text.split('##NEXT_STEP')[1]?.trim()
+            };
+
+            const icons = {
+                discover: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-blue-400"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`,
+                define: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-blue-400"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
+                design: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-blue-400"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>`,
+                deliver: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-blue-400"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>`
+            };
             
-            // Generate dynamic report content based on the challenge
-            const reportHTML = `
-                <div class="report-section">
-                    <h4><span class="phase-icon">1</span> Discover Phase</h4>
-                    <p><strong>Challenge Analysis:</strong> ${challenge}</p>
-                    <ul class="report-list">
-                        <li>Conduct stakeholder interviews to understand pain points and root causes</li>
-                        <li>Map current state processes and identify bottlenecks</li>
-                        <li>Analyze data patterns and performance metrics</li>
-                        <li>Benchmark against industry best practices</li>
-                        <li>Document all assumptions and constraints</li>
-                    </ul>
+            const formatList = (content) => {
+                if (!content) return '';
+                return '<ul>' + content.split('\n').map(item => `<li class="flex items-start"><span class="text-blue-400 mr-2 mt-1">&#10148;</span><span>${item.replace(/^- /, '')}</span></li>`).join('') + '</ul>';
+            };
+
+            const diagnosisHtml = sections.diagnosis ? `
+                <div class="bg-gray-800 p-4 rounded-lg border border-blue-500/30 mb-6">
+                    <h4 class="font-semibold text-lg text-white mb-2">Initial Diagnosis</h4>
+                    <p class="text-slate-300">${sections.diagnosis}</p>
                 </div>
-                
-                <div class="report-section">
-                    <h4><span class="phase-icon">2</span> Define Phase</h4>
-                    <p><strong>Problem Framing:</strong></p>
-                    <ul class="report-list">
-                        <li>Develop clear problem statements with measurable impact</li>
-                        <li>Create testable hypotheses for potential solutions</li>
-                        <li>Define success metrics and KPIs</li>
-                        <li>Align stakeholders on objectives and priorities</li>
-                        <li>Establish project scope and boundaries</li>
-                    </ul>
-                </div>
-                
-                <div class="report-section">
-                    <h4><span class="phase-icon">3</span> Design Phase</h4>
-                    <p><strong>Solution Architecture:</strong></p>
-                    <ul class="report-list">
-                        <li>Generate multiple solution options through ideation workshops</li>
-                        <li>Create rapid prototypes for validation</li>
-                        <li>Design user journeys and experience maps</li>
-                        <li>Develop technical architecture and integration plans</li>
-                        <li>Build MVP roadmap with phased delivery approach</li>
-                    </ul>
-                </div>
-                
-                <div class="report-section">
-                    <h4><span class="phase-icon">4</span> Deliver Phase</h4>
-                    <p><strong>Implementation Strategy:</strong></p>
-                    <ul class="report-list">
-                        <li>Execute agile sprints with continuous feedback loops</li>
-                        <li>Implement measurement framework for tracking progress</li>
-                        <li>Deploy change management and training programs</li>
-                        <li>Monitor KPIs and adjust based on real-world data</li>
-                        <li>Create playbooks for scaling and replication</li>
-                    </ul>
-                </div>
-                
-                <div class="report-section" style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
-                    <h4 style="color: var(--primary);">Recommended Next Steps</h4>
-                    <ol style="margin-left: 1.5rem;">
-                        <li style="margin-bottom: 0.5rem;">Schedule discovery workshop with key stakeholders</li>
-                        <li style="margin-bottom: 0.5rem;">Conduct 2-week assessment sprint</li>
-                        <li style="margin-bottom: 0.5rem;">Present findings and get buy-in for solution approach</li>
-                        <li style="margin-bottom: 0.5rem;">Begin MVP development with quick wins</li>
-                    </ol>
+            ` : '';
+            
+            const blueprintHtml = `
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-gray-900 p-6 rounded-lg">
+                        <div class="flex items-center mb-3">${icons.discover}<h4 class="text-xl font-semibold text-white ml-3">1. Discover</h4></div>
+                        <div class="text-slate-400 space-y-2">${formatList(sections.discover)}</div>
+                    </div>
+                    <div class="bg-gray-900 p-6 rounded-lg">
+                        <div class="flex items-center mb-3">${icons.define}<h4 class="text-xl font-semibold text-white ml-3">2. Define</h4></div>
+                        <div class="text-slate-400 space-y-2">${formatList(sections.define)}</div>
+                    </div>
+                    <div class="bg-gray-900 p-6 rounded-lg">
+                        <div class="flex items-center mb-3">${icons.design}<h4 class="text-xl font-semibold text-white ml-3">3. Design</h4></div>
+                        <div class="text-slate-400 space-y-2">${formatList(sections.design)}</div>
+                    </div>
+                    <div class="bg-gray-900 p-6 rounded-lg">
+                        <div class="flex items-center mb-3">${icons.deliver}<h4 class="text-xl font-semibold text-white ml-3">4. Deliver</h4></div>
+                        <div class="text-slate-400 space-y-2">${formatList(sections.deliver)}</div>
+                    </div>
                 </div>
             `;
             
-            reportContent.innerHTML = reportHTML;
-            reportContainer.style.display = 'block';
-            
-            // Smooth scroll to report
-            setTimeout(() => {
-                reportContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+            const nextStepHtml = sections.nextStep ? `
+                <div class="mt-6 bg-blue-600/20 border border-blue-500 text-center p-6 rounded-lg">
+                    <h4 class="text-xl font-semibold text-white mb-2">Ready for the Next Step?</h4>
+                    <p class="text-blue-200 mb-4">${sections.nextStep}</p>
+                    <a href="#contact" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105">Book a Consultation</a>
+                </div>
+            ` : '';
+
+            outputContainer.innerHTML = `
+                <h3 class="text-2xl font-bold text-white mb-4">Your Generated Strategic Blueprint:</h3>
+                ${diagnosisHtml}
+                ${blueprintHtml}
+                ${nextStepHtml}
+            `;
+            gsap.from(outputContainer, { opacity: 0, y: 20, duration: 0.5 });
         }
-        
-        function startNewAnalysis() {
-            document.getElementById('reportContainer').style.display = 'none';
-            document.getElementById('chatMessages').scrollTop = 0;
-            document.getElementById('userInput').focus();
+
+
+        function initFooter() {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
         }
-        
-        // Enter key support for AI Lab
-        document.addEventListener('DOMContentLoaded', function() {
-            const userInput = document.getElementById('userInput');
-            if (userInput) {
-                userInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        generateReport();
-                    }
-                });
+
+        function initThreeJSBackground() {
+            const container = document.getElementById('hero-canvas-container');
+            if (!container) return;
+            let scene, camera, renderer, stars;
+
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+            camera.position.z = 1;
+            camera.rotation.x = Math.PI / 2;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({
+                alpha: true,
+                antialias: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Stars
+            const starGeo = new THREE.BufferGeometry();
+            const starVertices = [];
+            for (let i = 0; i < 6000; i++) {
+                const x = (Math.random() - 0.5) * 2000;
+                const y = (Math.random() - 0.5) * 2000;
+                const z = (Math.random() - 0.5) * 2000;
+                starVertices.push(x, y, z);
             }
-        });
+            starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+
+            let starMaterial = new THREE.PointsMaterial({
+                color: 0xaaaaaa,
+                size: 0.7,
+                transparent: true
+            });
+
+            stars = new THREE.Points(starGeo, starMaterial);
+            scene.add(stars);
+
+            // Animation
+            let mouseX = 0;
+            let mouseY = 0;
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - window.innerWidth / 2) / 1000;
+                mouseY = (event.clientY - window.innerHeight / 2) / 1000;
+            });
+            
+            function animate() {
+                // Subtle mouse interaction
+                camera.position.x += (mouseX - camera.position.x) * 0.01;
+                camera.position.y += (-mouseY - camera.position.y) * 0.01;
+                camera.lookAt(scene.position);
+
+                stars.rotation.y += 0.0002;
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+    });
     </script>
 </body>
 </html>
